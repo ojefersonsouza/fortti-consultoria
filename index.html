@@ -85,6 +85,9 @@ a{color:var(--fg);text-decoration:none;}
 .nav .btn{margin-left:10px;}
 .burger{display:none;width:44px;height:44px;align-items:center;justify-content:center;background:transparent;
   border:1px solid var(--line-2);border-radius:var(--r-sm);cursor:pointer;}
+.burger .ic-close{display:none;}
+.burger[aria-expanded="true"] .ic-menu{display:none;}
+.burger[aria-expanded="true"] .ic-close{display:block;}
 
 /* hero */
 .hero{position:relative;overflow:hidden;padding:112px 0 110px;min-height:648px;display:flex;align-items:center;
@@ -98,10 +101,9 @@ a{color:var(--fg);text-decoration:none;}
 .hero h1{font-size:clamp(38px,5vw,62px);margin:22px 0 0;}
 .hero .sub{font-size:clamp(17px,1.8vw,19px);color:var(--fg-2);margin-top:22px;max-width:560px;}
 .hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px;}
-.hero-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:30px;}
+.hero-meta{display:flex;flex-wrap:wrap;gap:26px;margin-top:28px;}
 @media (min-width:1021px){.hero-meta{flex-wrap:nowrap;}.chip{white-space:nowrap;}}
-.chip{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border:1px solid var(--line);
-  border-radius:999px;background:var(--card);font-size:12.8px;color:var(--fg-2);}
+.chip{display:inline-flex;align-items:center;gap:9px;font-size:14px;color:var(--fg-2);}
 .chip svg{flex:0 0 auto;}
 
 /* operadoras */
@@ -340,11 +342,12 @@ a{color:var(--fg);text-decoration:none;}
 
 /* os dois painéis herdam as MESMAS linhas da grade acima */
 .cmp-left,.cmp-right{grid-row:1/-1;display:grid;grid-template-rows:subgrid;align-items:start;}
-.ci,.ri{display:contents;}
+.ci{display:contents;}
+.ri{display:flex;gap:14px;align-items:center;}
 
 .cmp-left{grid-column:1;grid-template-columns:168px 22px minmax(0,1fr);column-gap:12px;
   background:#E6E9F2;border-radius:20px;padding:32px 0 34px;}
-.cmp-right{grid-column:2;grid-template-columns:40px minmax(0,1fr);column-gap:14px;
+.cmp-right{grid-column:2;grid-template-columns:minmax(0,1fr);
   margin:-18px 0 -18px -14px;padding:48px 30px 50px;border-radius:20px;position:relative;z-index:1;
   background:linear-gradient(170deg,#16244A 0%,#0C1733 58%,#0F2C1F 150%);
   border:1.5px solid var(--cta);
@@ -367,8 +370,8 @@ a{color:var(--fg);text-decoration:none;}
 .cmp-right-hd .tagline{font-size:13.5px;line-height:1.45;color:#AFCDBD;max-width:360px;}
 
 .ri .ico{flex:0 0 40px;width:40px;height:40px;border-radius:12px;background:var(--cta);
-  align-self:flex-start;display:flex;align-items:center;justify-content:center;}
-.ri .t{font-size:14.8px;line-height:1.5;color:#E9EFF7;font-weight:500;padding-top:4px;}
+  display:flex;align-items:center;justify-content:center;}
+.ri .t{font-size:14.8px;line-height:1.5;color:#E9EFF7;font-weight:500;}
 
 /* navegadores sem subgrid: cai para blocos independentes */
 @supports not (grid-template-rows:subgrid){
@@ -376,7 +379,6 @@ a{color:var(--fg);text-decoration:none;}
     .cmp-left,.cmp-right{grid-template-rows:none;align-content:start;row-gap:26px;grid-template-columns:1fr;}
     .cmp-left-hd,.cmp-right-hd{grid-column:1;}
     .ci{display:grid;grid-template-columns:168px 22px minmax(0,1fr);column-gap:12px;align-items:start;}
-    .ri{display:flex;gap:14px;align-items:flex-start;}
   }
 }
 
@@ -392,9 +394,7 @@ a{color:var(--fg);text-decoration:none;}
   .ci-x{grid-column:1;grid-row:1;padding-top:3px;}
   .ci-k{grid-column:2;grid-row:1;padding-left:0;font-size:16px;}
   .ci-t{grid-column:2;grid-row:2;padding-right:0;}
-  .ri{display:flex;gap:14px;align-items:flex-start;}
   .ri .ico{margin-left:0;}
-  .ri .t{padding-right:0;padding-top:8px;}
 }
 
 /* ---------- formulário ---------- */
@@ -447,7 +447,6 @@ a{color:var(--fg);text-decoration:none;}
 .light .op{background:#fff;}
 .light .op:hover{background:#fff;}
 .light .op.ph span{color:#7B869C;}
-.light .chip{background:#fff;}
 .light .todo{color:#6B7690;}
 .light .btn-ghost{border-color:rgba(14,26,56,.24);color:#0E1A38;}
 .light .btn-ghost:hover{background:rgba(14,26,56,.06);border-color:rgba(14,26,56,.38);}
@@ -460,7 +459,7 @@ a{color:var(--fg);text-decoration:none;}
   .steps{grid-template-columns:repeat(2,minmax(0,1fr));}
   .about{grid-template-columns:1fr;}
   .about-photo,.about-body{grid-column:span 1;}
-  .about-photo img{min-height:320px;}
+  .about-photo img{height:224px;min-height:224px;object-position:center 6%;}
   .ftr-grid{grid-template-columns:1fr 1fr;}
 }
 @media (max-width:860px){
@@ -473,16 +472,15 @@ a{color:var(--fg);text-decoration:none;}
   .hero-grid{max-width:none;text-align:center;}
   .hero .sub{margin-left:auto;margin-right:auto;}
   .hero-cta{justify-content:center;}
-  .hero-list{max-width:none;}
-  .hero-list li{justify-content:center;text-align:center;font-size:15px;}
   .hero-meta{flex-wrap:nowrap;justify-content:center;gap:6px;}
-  .chip{flex:0 0 auto;white-space:nowrap;font-size:clamp(7.8px,2.45vw,11px);padding:6px 9px;gap:6px;}
-  .chip svg{width:11px;height:11px;}
+  .hero-meta{margin-top:24px;}
+  .chip{flex:0 0 auto;white-space:nowrap;font-size:clamp(8.2px,2.7vw,11.5px);gap:6px;}
+  .chip svg{width:12px;height:12px;}
 }
 @media (max-width:430px){
-  .hero-meta{margin-inline:-8px;gap:5px;}
-  .chip{padding:5px 7px;gap:5px;}
-  .chip svg{width:10px;height:10px;}
+  .hero-meta{gap:12px;}
+  .chip{gap:5px;}
+  .chip svg{width:11px;height:11px;}
 }
 @media (max-width:700px){
   html{scroll-padding-top:80px;}
@@ -525,7 +523,8 @@ a{color:var(--fg);text-decoration:none;}
     </a>
 
     <button class="burger" id="burger" aria-expanded="false" aria-controls="nav" aria-label="Abrir menu">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EEF2FA" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg>
+      <svg class="ic-menu" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EEF2FA" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg>
+      <svg class="ic-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EEF2FA" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"/><path d="M18 6 6 18"/></svg>
     </button>
 
     <nav class="nav" id="nav">
@@ -547,6 +546,11 @@ a{color:var(--fg);text-decoration:none;}
         <h1>Sua empresa paga mais do que precisa em telecom.</h1>
         <p class="sub">Analiso suas faturas linha por linha, negocio com as operadoras por você e assumo a gestão dos seus serviços de telefonia, internet e TV. Residencial ou empresarial, em todo o Brasil.</p>
 
+        <div class="hero-meta">
+          <span class="chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D93A2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h18"/><circle cx="12" cy="12" r="9"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/></svg>Atendimento em todo o Brasil</span>
+          <span class="chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D93A2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 5 6.2v5c0 4.2 2.8 7.8 7 9 4.2-1.2 7-4.8 7-9v-5Z"/></svg>Sem vínculo com operadoras</span>
+        </div>
+
         <div class="hero-cta">
           <a class="btn btn-primary" href="https://wa.me/5541988020410">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.6 7.3L3 20.5l1.8-5.2A8.4 8.4 0 1 1 21 11.5Z"/></svg>
@@ -555,10 +559,6 @@ a{color:var(--fg);text-decoration:none;}
           <a class="btn btn-ghost btn-guide" href="https://hotmart.com/product/guia-completo-de-como-economizar-em-sua-conta-de-telefone-e-internet" target="_blank" rel="noopener noreferrer">Baixar o guia de economia</a>
         </div>
 
-        <div class="hero-meta">
-          <span class="chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D93A2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h18"/><circle cx="12" cy="12" r="9"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/></svg>Atendimento em todo o Brasil</span>
-          <span class="chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D93A2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 5 6.2v5c0 4.2 2.8 7.8 7 9 4.2-1.2 7-4.8 7-9v-5Z"/></svg>Sem vínculo com operadoras</span>
-        </div>
     </div>
   </div>
 </section>
