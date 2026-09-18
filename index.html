@@ -252,7 +252,6 @@ a{color:var(--fg);text-decoration:none;}
   color:var(--fg);display:flex;align-items:center;justify-content:center;cursor:pointer;
   transition:background .18s ease,border-color .18s ease,opacity .18s ease;}
 .car-btn:hover:not([disabled]){background:rgba(152,180,240,.1);border-color:var(--line-2);}
-.car-btn[disabled]{opacity:.32;cursor:default;}
 .light .car-btn:hover:not([disabled]){background:rgba(14,26,56,.06);}
 .car{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;
   scrollbar-width:none;-ms-overflow-style:none;padding:2px 2px 6px;margin:-2px -2px 0;}
@@ -1051,36 +1050,78 @@ a{color:var(--fg);text-decoration:none;}
 
   var car = document.getElementById('qCar');
   if (car) {
-    var items = car.querySelectorAll('.car-item');
+    var origItems = Array.prototype.slice.call(car.querySelectorAll('.car-item'));
+    var total = origItems.length;
     var prev = document.getElementById('qPrev');
     var next = document.getElementById('qNext');
     var dots = document.getElementById('qDots');
 
+    origItems.forEach(function(el){ car.appendChild(el.cloneNode(true)); });
+    origItems.forEach(function(el){ car.appendChild(el.cloneNode(true)); });
+
+    var allItems = car.querySelectorAll('.car-item');
+    var curIdx = total;
+    var jumping = false;
+
     function step(){
-      return items.length > 1 ? (items[1].offsetLeft - items[0].offsetLeft) : car.clientWidth;
+      return allItems.length > 1 ? (allItems[1].offsetLeft - allItems[0].offsetLeft) : car.clientWidth;
     }
-    Array.prototype.forEach.call(items, function(_, i){
+
+    function goTo(idx, smooth){
+      curIdx = idx;
+      car.scrollTo({ left: idx * step(), behavior: smooth ? 'smooth' : 'auto' });
+      syncDots();
+    }
+
+    function syncDots(){
+      var real = ((curIdx % total) + total) % total;
+      Array.prototype.forEach.call(dots.children, function(d, i){
+        d.setAttribute('aria-current', i === real ? 'true' : 'false');
+      });
+    }
+
+    origItems.forEach(function(_, i){
       var b = document.createElement('button');
       b.type = 'button';
       b.setAttribute('aria-label', 'Ir para o depoimento ' + (i + 1));
-      b.addEventListener('click', function(){ car.scrollTo({ left: i * step(), behavior: 'smooth' }); });
+      b.addEventListener('click', function(){ goTo(total + i, true); });
       dots.appendChild(b);
     });
-    prev.addEventListener('click', function(){ car.scrollBy({ left: -step(), behavior: 'smooth' }); });
-    next.addEventListener('click', function(){ car.scrollBy({ left: step(), behavior: 'smooth' }); });
 
-    function sync(){
-      var max = car.scrollWidth - car.clientWidth - 2;
-      prev.disabled = car.scrollLeft <= 2;
-      next.disabled = car.scrollLeft >= max;
-      var idx = Math.round(car.scrollLeft / step());
-      Array.prototype.forEach.call(dots.children, function(d, i){
-        d.setAttribute('aria-current', i === idx ? 'true' : 'false');
-      });
-    }
-    car.addEventListener('scroll', sync, { passive: true });
-    window.addEventListener('resize', sync);
-    sync();
+    car.style.scrollBehavior = 'auto';
+    car.scrollLeft = total * step();
+    car.style.scrollBehavior = '';
+
+    prev.removeAttribute('disabled');
+    next.removeAttribute('disabled');
+    prev.addEventListener('click', function(){ goTo(curIdx - 1, true); });
+    next.addEventListener('click', function(){ goTo(curIdx + 1, true); });
+
+    car.addEventListener('scroll', function(){
+      if (jumping) return;
+      var s = step();
+      var idx = Math.round(car.scrollLeft / s);
+      curIdx = idx;
+      if (idx <= 0) {
+        jumping = true;
+        curIdx = idx + total;
+        car.style.scrollBehavior = 'auto';
+        car.scrollLeft = curIdx * s;
+        car.style.scrollBehavior = '';
+        jumping = false;
+      } else if (idx >= total * 2) {
+        jumping = true;
+        curIdx = idx - total;
+        car.style.scrollBehavior = 'auto';
+        car.scrollLeft = curIdx * s;
+        car.style.scrollBehavior = '';
+        jumping = false;
+      }
+      syncDots();
+    }, { passive: true });
+
+    window.addEventListener('resize', function(){ goTo(curIdx, false); });
+    syncDots();
   }
 
   // tabs "para quem"
