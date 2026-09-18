@@ -159,6 +159,7 @@ a{color:var(--fg);text-decoration:none;}
   border-top:1px solid var(--line);margin-top:12px;}
 
 /* stat tile */
+.stats-row{grid-template-columns:repeat(3,minmax(0,1fr));}
 .stat{align-items:flex-start;justify-content:center;gap:8px;}
 .stat b{font-size:40px;font-weight:600;letter-spacing:-.035em;color:var(--fg);line-height:1;}
 .stat span{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-3);}
@@ -491,6 +492,7 @@ a{color:var(--fg);text-decoration:none;}
   .nav .btn{margin:6px 0 0;}
   .burger{display:flex;}
   .bento{grid-template-columns:1fr;}
+  .stats-row{grid-template-columns:1fr;}
   .sp3,.sp2,.sp4,.sp6{grid-column:span 1;}
   .steps{grid-template-columns:1fr;}
   .tile,.about-body,.band{padding:26px 22px 28px;}
@@ -816,7 +818,7 @@ a{color:var(--fg);text-decoration:none;}
         <p>Atendendo centenas de clientes residenciais e empresariais, desenvolvi expertise com foco na geração de economia e na satisfação de quem usa o serviço — além da capacidade de resolver outros problemas que aparecem no caminho.</p>
         <p>O resultado financeiro e a satisfação dos clientes foram tão surpreendentes que me encorajaram a seguir carreira solo, oferecendo acesso às melhores condições do mercado e a descoberta de uma poupança escondida nas faturas.</p>
 
-        <div class="bento" style="grid-template-columns:repeat(3,minmax(0,1fr));margin-top:8px;">
+        <div class="bento stats-row" style="margin-top:8px;">
           <div class="tile stat" style="padding:22px 20px;"><b style="font-size:30px;">2005</b><span>No mercado desde</span></div>
           <div class="tile stat" style="padding:22px 20px;"><b style="font-size:30px;">Centenas</b><span>De clientes atendidos</span></div>
           <div class="tile stat" style="padding:22px 20px;"><b style="font-size:30px;">Brasil</b><span>Cobertura de atendimento</span></div>
